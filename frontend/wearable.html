@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FedECG · Wearable</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body { display: flex; flex-direction: column; }
+    main { flex: 1; display: grid; place-items: center; padding: 16px; }
+    #dev { width: min(100%, 420px); height: auto; }
+    .caption { text-align: center; display: grid; gap: 6px; padding: 0 16px 20px; }
+    .caption .state { font: 600 1.05rem var(--display); }
+    .ble-on { animation: pulse 0.8s infinite; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Fed<span>ECG</span> · Wearable</div>
+    <div class="right">
+      <label for="cli" class="muted">Cliente</label>
+      <select id="cli"><option>A</option><option>B</option><option>C</option><option>D</option></select>
+      <span id="conn" class="pill bad">a ligar…</span>
+    </div>
+  </div>
+  <main><svg id="dev" viewBox="0 0 400 440" role="img" aria-label="Wearable do utilizador"></svg></main>
+  <div class="caption">
+    <div class="state" id="state">À espera do servidor</div>
+    <div class="muted" id="sub">O ECG em bruto nunca sai do wearable.</div>
+  </div>
+<script src="/static/common.js"></script>
+<script src="/static/wearable.js"></script>
+</body>
+</html>

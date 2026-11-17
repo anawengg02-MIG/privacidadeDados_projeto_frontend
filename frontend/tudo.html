@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FedECG · Os 3 ecrãs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    /* Uma só página com os 3 ecrãs. Cada ecrã continua a ser a sua própria página
+       (wearable.html, telefone.html, servidor.html), aqui mostrada dentro de uma moldura. */
+    body { display: flex; flex-direction: column; height: 100vh; }
+    .grid { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(300px, 0.8fr) minmax(320px, 0.85fr) minmax(560px, 2fr); gap: 12px; padding: 12px; }
+    .pane { display: flex; flex-direction: column; min-height: 0; min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .pane h2 { padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 0.9rem; display: flex; justify-content: space-between; gap: 8px; }
+    .pane h2 span { color: var(--muted); font: 400 0.8rem var(--body); }
+    .pane iframe { flex: 1; width: 100%; border: 0; background: var(--bg); }
+    @media (max-width: 1200px) {
+      body { height: auto; }
+      .grid { grid-template-columns: 1fr 1fr; }
+      .pane { height: 820px; }
+      .pane.srv { grid-column: 1 / -1; }
+    }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Fed<span>ECG</span> · Os 3 ecrãs</div>
+    <div class="right">
+      <label for="cli" class="muted">Cliente</label>
+      <select id="cli"><option>A</option><option>B</option><option>C</option><option>D</option></select>
+    </div>
+  </div>
+  <div class="grid">
+    <section class="pane"><h2>1 · Wearable <span>mede, treina e protege</span></h2><iframe id="fWear" title="Wearable"></iframe></section>
+    <section class="pane"><h2>2 · Telemóvel <span>notificações e histórico</span></h2><iframe id="fTel" title="Telefone"></iframe></section>
+    <section class="pane srv"><h2>3 · Servidor <span>agrega; carrega em Iniciar aqui</span></h2><iframe id="fSrv" title="Servidor" src="/servidor"></iframe></section>
+  </div>
+<script>
+  // Escolhe o cliente (por defeito B) e carrega o wearable e o telefone desse cliente.
+  const cli = document.getElementById("cli");
+  const params = new URLSearchParams(location.search);
+  cli.value = (params.get("cliente") || "B").toUpperCase();
+  function load() {
+    document.getElementById("fWear").src = `/wearable?cliente=${cli.value}`;
+    document.getElementById("fTel").src = `/telefone?cliente=${cli.value}`;
+    history.replaceState(null, "", `?cliente=${cli.value}`);
+  }
+  cli.addEventListener("change", load);
+  load();
+</script>
+</body>
+</html>
